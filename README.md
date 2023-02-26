@@ -80,22 +80,10 @@ the Minecraft version you selected.
 If you want this behaviour, leave the select_build veriable empty.
 Otherwise select the build you want and the script will download it for you.
 
-### Versions
-
-> **Warning**
->
-> - This script is not made for migrating versions. It won't make sure your plugins
-are working or that your worlds won't get corrupted. It only downloads a new server
-file, nothing else.
-> - **I am not responsible for any lost data**
-
-This script is able to update/downgrade versions as you please. Just change the
-`select_version` variable to the version you want and the script will download
-it for you.
-
 ## Default JVM flags used
 
 By default this script uses [Aikar's](https://docs.papermc.io/paper/aikars-flags)
-flags. It's set up so that it automatically modifies them if over 12GB of memory
+flags.
+It's set up so that it automatically modifies them if over 12GB of memory
 is set for the server so you shouldn't need to change them unless you
 want to swap them out for something else.
