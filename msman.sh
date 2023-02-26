@@ -8,7 +8,7 @@ set -e
 #                            and acknowledge the original script and author.                                #
 #############################################################################################################
 
-CURRENT_SCRIPT_VERSION="v1.0.3"
+CURRENT_SCRIPT_VERSION="v1.0.1"
 
 # --------------------------------------------------
 # You shouldn't need to change anything in this file
@@ -206,29 +206,27 @@ function launch_server {
 function helper_scripts_update {
   # Download matching version of helper scripts
   echo "Updating helper scripts..."
-  # Download the file into ms-manager.tar.gz
-  curl -LJ -w '%{http_code}\n' "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$CURRENT_SCRIPT_VERSION/ms-man-helper.tar.gz" > ms-man-helper.tar.gz
-  # Check if the download was successful by checking the last line of the file for 200
-  if [[ $(cat ma-man.tar.gz | tail -n 1) == 200 ]]; then
+  # Download the file into ms-man-helper.tar.gz
+  if [[ $(curl -sLJ -w '%{http_code}\n' "https://github.com/jiriks74/msman.sh/releases/download/v1.0.0/ms-man-helper.tar.gz" -o msman-helper.tar.gz) == 200 ]]; then
     # Remove the last line of the file
-    sed -i '$d' ms-man-helper.tar.gz
+    # sed -i '$d' ms-man-helper.tar.gz
     # Extract the files from ms-man-helper.tar.gz
-    tar -xzf ms-man-helper.tar.gz
+    tar -xzf msman-helper.tar.gz
     # Remove the old script
     echo "Removing old helper scripts..."
-    rm -rf .ms-manager
+    rm -rf .msman
     echo "Removed old script"
     echo "Moving new helper scripts into place..."
-    mv ms-manager .ms-manager
+    mv msman .msman
     echo "Removing temporary files..."
-    rm ms-manager-helper.tar.gz
+    rm msman-helper.tar.gz
     echo "Helper scripts updated successfully."
     echo
     echo
   else
     echo "Failed to update helper scripts."
-    rm -rf ms-manager
-    rm ms-manager-helper.tar.gz
+    rm -rf msman
+    rm msman-helper.tar.gz
     exit 5
   fi
 }
@@ -238,32 +236,32 @@ function self_update {
   # Download the latest version of the script
   echo "Updating script..."
   # Download the file into start_new.sh
-  curl -sLJ -w '%{http_code}\n' "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$LATEST_VERSION/start.sh" > start_new.sh
+  curl -sLJ -w '%{http_code}\n' "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$LATEST_SCRIPT_VERSION/start.sh" > msman_new.sh
   # Check if the download was successful by checking the last line of the file for 200
   if [[ $(cat start_new.sh | tail -n 1) == 200 ]]; then
     # Remove the last line of the file
-    sed -i '$d' start_new.sh
+    sed -i '$d' msman_new.sh
     # Make the file executable
-    chmod +x start_new.sh
+    chmod +x msman_new.sh
     # Remove the old script
-    rm start.sh
+    rm msman.sh
     echo "Removed old script"
     # Rename the new script
-    mv start_new.sh start.sh
+    mv msman_new.sh msman.sh
     echo "Renamed new script"
     echo "Script updated successfully."
     echo
   else
     echo "Failed to update script."
-    rm start_new.sh
+    rm msman_new.sh
     exit 5
   fi
 }
 
 # Check helper scripts update
 function check_helper_scripts {
-  if [[ -d .ms-manager ]]; then
-    source "./ms-manager/version.sh"
+  if [[ -d .msman ]]; then
+    source "./.msman/version.sh"
     if [[ $CURRENT_SCRIPT_VERSION != $EXTRA_SCRIPTS_VERSION ]]; then
       echo "Helper script verion mismatch!"
       echo "Main script version: $CURRENT_SCRIPT_VERSION"
@@ -281,7 +279,7 @@ function check_helper_scripts {
 
 # Get latest script version
 function get_latest_script_release {
-response=$(curl -sL "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest")
+  response=$(curl -sL "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest")
 
   if [[ $response =~ "API rate limit exceeded" ]]; then
     echo "API limit exceeded. Will not check for updates."
@@ -298,10 +296,10 @@ function check_self_update {
   get_latest_script_release
 
   # Compare the current version with the latest version
-  if [[ "$CURRENT_SCRIPT_VERSION" != "$LATEST_VERSION" ]]; then
+  if [[ "$CURRENT_SCRIPT_VERSION" != "$LATEST_SCRIPT_VERSION" ]]; then
     echo "An update is available!"
     echo "Current version: $CURRENT_SCRIPT_VERSION"
-    echo "Latest version: $LATEST_VERSION"
+    echo "Latest version: $LATEST_SCRIPT_VERSION"
     echo
     echo "The script will continue without updating in 15 seconds."
     echo "If you decide to update it is your responsibility to check the release notes for any breaking changes."
@@ -320,7 +318,7 @@ function check_self_update {
       read -t 15 -p "Do you want to update? [y/N] " update
       if [ "$update" == "y" ] || [ "$update" == "Y" ]; then
         self_update
-        CURRENT_VERSION=$LATEST_VERSION
+        CURRENT_VERSION=$LATEST_SCRIPT_VERSION
         check_helper_scripts
       else
         echo "Skipping update."
@@ -339,7 +337,7 @@ function load_config {
     echo "Config file does not exist."
     echo "Downloading the default config file..."
     # Download the default config file for the current version
-    curl -sLJ -w '%{http_code}' "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$CURRENT_VERSION/launch.cfg" > launch.cfg
+    curl -sLJ -w '%{http_code}' "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$CURRENT_SCRIPT_VERSION/launch.cfg" > launch.cfg
     # Check if the download was successful by checking the last line of the file for 200
     if [[ $(cat launch.cfg | tail -n 1) == 200 ]]; then
       # Remove the last line of the file
@@ -369,6 +367,7 @@ function load_config {
       >&2 echo "Failed to download the default config file."
       >&2 echo "Go to the GitHub repository for more information:"
       >&2 echo "https://github.com/$REPO_OWNER/$REPO_NAME"
+      rm launch.cfg
       echo "Exiting..."
       exit 1
     fi
@@ -390,18 +389,18 @@ function delete_old_server {
 function load_script {
   # DONE: Check if the script files exist
   #   - Checked in check_helper_scripts
-  source "./.ms-manager/detect_server.sh"
-  source "./.ms-manager/java.sh"
+  source "./.msman/detect_server.sh"
+  source "./.msman/java.sh"
 
   # Load the correct script
   if [[ $server_type == "paper" ]]; then
-    source "./.ms-manager/paper.sh"
+    source "./.msman/paper.sh"
   # elif [[ $server_type == "vanilla" ]]; then
-  #   source "$cwd/ms-manager/vanilla.sh"
+  #   source "$cwd/msman/vanilla.sh"
   # elif [[ $server_type == "forge" ]]; then
-  #   source "$cwd/ms-manager/forge.sh"
+  #   source "$cwd/msman/forge.sh"
   # elif [[ $server_type == "fabric" ]]; then
-  #   source "$cwd/ms-manager/fabric.sh"
+  #   source "$cwd/msman/fabric.sh"
   else
     >&2 echo "Unknown server type."
     echo "Exiting..."
