@@ -208,8 +208,6 @@ function helper_scripts_update {
   echo "Updating helper scripts..."
   # Download the file into ms-man-helper.tar.gz
   if [[ $(curl -sLJ -w '%{http_code}\n' "https://github.com/jiriks74/msman.sh/releases/download/v1.0.0/ms-man-helper.tar.gz" -o msman-helper.tar.gz) == 200 ]]; then
-    # Remove the last line of the file
-    # sed -i '$d' ms-man-helper.tar.gz
     # Extract the files from ms-man-helper.tar.gz
     tar -xzf msman-helper.tar.gz
     # Remove the old script
@@ -333,12 +331,7 @@ function load_config {
     echo "Config file does not exist."
     echo "Downloading the default config file..."
     # Download the default config file for the current version
-    curl -sLJ -w '%{http_code}' "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$CURRENT_SCRIPT_VERSION/msman.cfg" > msman.cfg
-    # Check if the download was successful by checking the last line of the file for 200
-    if [[ $(cat msman.cfg | tail -n 1) == 200 ]]; then
-      # Remove the last line of the file
-      sed -i '$d' msman.cfg
-
+    if [[ $(curl -sLJ -w '%{http_code}\n' "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$CURRENT_SCRIPT_VERSION/msman.cfg" -o msman.cfg) == 200 ]]; then
       echo
       read -p "Do you want to edit the config file? [y/N] " edit_config
       if [ "$edit_config" == "y" ] || [ "$edit_config" == "Y" ]; then
@@ -465,6 +458,7 @@ function main {
 
 # Check for updates on GitHub
 if [[ "$1" == "--redownload" ]] || [[ "$1" == "-r" ]]; then
+  get_latest_script_release
   self_update
 # TODO: Add `--edit-config` option
 elif [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
