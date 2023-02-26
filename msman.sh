@@ -235,10 +235,10 @@ function helper_scripts_update {
 function self_update {
   # Download the latest version of the script
   echo "Updating script..."
-  # Download the file into start_new.sh
-  curl -sLJ -w '%{http_code}\n' "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$LATEST_SCRIPT_VERSION/start.sh" > msman_new.sh
+  # Download the file into msman_new.sh
+  curl -sLJ -w '%{http_code}\n' "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$LATEST_SCRIPT_VERSION/msman.sh" > msman_new.sh
   # Check if the download was successful by checking the last line of the file for 200
-  if [[ $(cat start_new.sh | tail -n 1) == 200 ]]; then
+  if [[ $(cat msman_new.sh | tail -n 1) == 200 ]]; then
     # Remove the last line of the file
     sed -i '$d' msman_new.sh
     # Make the file executable
