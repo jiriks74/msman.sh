@@ -12,7 +12,7 @@ CURRENT_SCRIPT_VERSION="v1.0.1"
 
 # --------------------------------------------------
 # You shouldn't need to change anything in this file
-# Settings are located in 'launch.cfg'
+# Settings are located in 'msman.cfg'
 # --------------------------------------------------
 #
 # The url of the script (used for updating)
@@ -333,48 +333,48 @@ function check_self_update {
 # Load config
 function load_config {
   # Check if the config file exists
-  if [ ! -f launch.cfg ]; then
+  if [ ! -f msman.cfg ]; then
     echo "Config file does not exist."
     echo "Downloading the default config file..."
     # Download the default config file for the current version
-    curl -sLJ -w '%{http_code}' "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$CURRENT_SCRIPT_VERSION/launch.cfg" > launch.cfg
+    curl -sLJ -w '%{http_code}' "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$CURRENT_SCRIPT_VERSION/msman.cfg" > msman.cfg
     # Check if the download was successful by checking the last line of the file for 200
-    if [[ $(cat launch.cfg | tail -n 1) == 200 ]]; then
+    if [[ $(cat msman.cfg | tail -n 1) == 200 ]]; then
       # Remove the last line of the file
-      sed -i '$d' launch.cfg
+      sed -i '$d' msman.cfg
 
       echo
       read -p "Do you want to edit the config file? [y/N] " edit_config
       if [ "$edit_config" == "y" ] || [ "$edit_config" == "Y" ]; then
         if [ -z "$EDITOR" ]; then
           >&2 echo "EDITOR is not set."
-          >&2 echo "Open 'launch.cfg' manually."
+          >&2 echo "Open 'msman.cfg' manually."
           echo "Exiting..."
           exit 1
         else
           # Check if $EDITOR is installed
           if ! command -v $EDITOR &> /dev/null; then
             >&2 echo "$EDITOR is not installed."
-            >&2 echo "Open 'launch.cfg' manually."
+            >&2 echo "Open 'msman.cfg' manually."
             echo "Exiting..."
             exit 1
           fi
           echo "Opening the config file in $EDITOR..."
-          $EDITOR launch.cfg
+          $EDITOR msman.cfg
         fi
       fi
     else
       >&2 echo "Failed to download the default config file."
       >&2 echo "Go to the GitHub repository for more information:"
       >&2 echo "https://github.com/$REPO_OWNER/$REPO_NAME"
-      rm launch.cfg
+      rm msman.cfg
       echo "Exiting..."
       exit 1
     fi
   fi
 
   # Load config
-  source launch.cfg
+  source msman.cfg
 }
 
 # Delete old server file with name $old_server_file
@@ -479,7 +479,7 @@ elif [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
   echo "  -r, --redownload  Redownloads the script from GitHub."
   echo "  -h, --help        Show this help message."
   echo
-  echo "To change the settings of the script, edit the 'launch.cfg' file."
+  echo "To change the settings of the script, edit the 'msman.cfg' file."
   echo "If the file does not exist, it will be downloaded automatically when the script is run and you will be asked if you want to edit it."
   echo
   echo "For more information, see:"
