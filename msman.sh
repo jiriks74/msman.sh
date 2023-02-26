@@ -238,8 +238,11 @@ function self_update {
     # Make the file executable
     chmod +x msman_new.sh
     # Remove the old script
-    rm msman.sh
+    if [[ -f msman.sh ]]; then
+      echo "Removing old script..."
+      rm msman.sh
     echo "Removed old script"
+    fi
     # Rename the new script
     mv msman_new.sh msman.sh
     echo "Renamed new script"
@@ -460,6 +463,9 @@ function main {
 if [[ "$1" == "--redownload" ]] || [[ "$1" == "-r" ]]; then
   get_latest_script_release
   self_update
+  # Reload the script
+  exec "$0"
+  exit 0
 # TODO: Add `--edit-config` option
 elif [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
   echo "Usage: ./script.sh [OPTION]"
