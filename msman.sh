@@ -8,7 +8,7 @@ set -e
 #                            and acknowledge the original script and author.                                #
 #############################################################################################################
 
-CURRENT_SCRIPT_VERSION="v1.1.5"
+CURRENT_SCRIPT_VERSION="v1.1.6"
 
 # --------------------------------------------------
 # You shouldn't need to change anything in this file
@@ -207,13 +207,15 @@ function helper_scripts_update {
   # Download matching version of helper scripts
   echo "Updating helper scripts..."
   # Download the file into ms-man-helper.tar.gz
-  if [[ $(curl -sLJ -w '%{http_code}\n' "https://github.com/jiriks74/msman.sh/releases/download/$CURRENT_SCRIPT_VERSION/ms-man-helper.tar.gz" -o msman-helper.tar.gz) == 200 ]]; then
+  if [[ $(curl -sLJ -w '%{http_code}\n' "https://github.com/$REPO_OWNER/$REPO_NAME/releases/download/$CURRENT_SCRIPT_VERSION/msman-helper.tar.gz" -o msman-helper.tar.gz) == 200 ]]; then
     # Extract the files from ms-man-helper.tar.gz
     tar -xzf msman-helper.tar.gz
-    # Remove the old script
-    echo "Removing old helper scripts..."
-    rm -rf .msman
-    echo "Removed old script"
+    if [ -d .msman ]; then
+      # Remove the old scripts
+      echo "Removing old helper scripts..."
+      rm -rf .msman
+      echo "Removed old script"
+    fi
     echo "Moving new helper scripts into place..."
     mv msman/.msman .msman
     echo "Removing temporary files..."
@@ -462,13 +464,7 @@ function main {
   launch_server
 }
 
-if [[ "$1" == "--redownload" ]] || [[ "$1" == "-r" ]]; then
-  get_latest_script_release
-  self_update
-  # Reload the script
-  bash -c "$(pwd)/msman.sh"
-  exit 0
-elif [[ "$1" == "--edit-config" ]] || [[ "$1" == "-e" ]]; then
+if [[ "$1" == "--edit-config" ]] || [[ "$1" == "-e" ]]; then
   if ! command -v $EDITOR &> /dev/null; then
     echo "EDITOR is not set."
     echo "Open 'msman.cfg' manually."
@@ -482,7 +478,6 @@ elif [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
   echo "Starts the Minecraft server."
   echo 
   echo "Options:"
-  echo "  -r, --redownload    Redownloads the script from GitHub."
   echo "  -e, --edit-config   Edit the config file."
   echo "  -h, --help          Show this help message."
   echo
