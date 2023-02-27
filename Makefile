@@ -13,7 +13,7 @@ all:
 	rm -rf msman
 	mkdir msman
 	cp -r .msman msman
-	tar -czf msman-hepler.tar.gz msman
+	tar -czf msman-helper.tar.gz msman
 	rm -rf msman
 
 clean:
