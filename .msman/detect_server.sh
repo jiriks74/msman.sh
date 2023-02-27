@@ -5,9 +5,10 @@ function get_existing_server {
   if ls paper-*.jar 1> /dev/null 2>&1; then
     existing_server_type="paper"
     get_existing_paper
+  elif ls fabric-server-mc.*.jar 1> /dev/null 2>&1; then
+    existing_server_type="fabric"
+    get_existing_fabric
   # TODO: Add support for other server types
-  # elif ls fabric-*.jar 1> /dev/null 2>&1; then
-  #   existing_server_type="fabric"
   # elif ls spigot-*.jar 1> /dev/null 2>&1; then
   #   existing_server_type="spigot"
   # elif ls craftbukkit-*.jar 1> /dev/null 2>&1; then
@@ -28,6 +29,30 @@ function get_existing_server {
       # TODO: Ask the user if they want to continue
     fi
   fi
+}
+
+# Get existing version and build of fabric
+function get_existing_fabric {
+  # Get the current server file name
+  server_file=$(basename ./fabric-server-mc.*.jar)
+
+  # Assign the file name to a variable
+  FILE=$server_file
+
+  # Remove the .jar extension
+  FILE=${FILE%.jar}
+
+  # Split by - and get the third field (mc.x.x.x)
+  current_version=$(echo $FILE | cut -d. -f2,3,4 | cut -d- -f1)
+
+  # Split by - and get the fourth field (launcher.x.x.x)
+  current_build=$(echo $FILE | cut -d- -f4 | cut -d. -f2,3,4)
+
+  echo "Current server file: $server_file"
+  echo "  - Version $current_version"
+  echo "  - Build $current_build"
+  echo
+  echo
 }
 
 # Get existing version and build of paper
