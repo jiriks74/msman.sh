@@ -199,7 +199,7 @@ function launch_server {
   echo "Starting the server..."
   echo
   echo
-  java $java_launchoptions -jar "$(echo $server_file)" $mc_launchoptions
+  java $java_launchoptions -jar $server_file $mc_launchoptions
 }
 
 # Helper scripts update
