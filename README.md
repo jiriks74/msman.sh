@@ -69,7 +69,28 @@ you're running something like Ubuntu.*
 
 ## Basic setup
 
-- [ ] ***TBD***
+- Option 1: Run the script directly from GitHub
+
+```bash
+curl -sSL https://raw.githubusercontent.com/jiriks74/msman.sh/main/msman.sh | sh -s -- --redownload
+```
+
+- Option 2: Download `msman.sh` from release to where you want your minecraft
+server and start it with
+
+```bash
+chmod +x msman.sh
+./msman.sh
+```
+
+- Option 2: Clone the repository
+
+```bash
+git clone https://github.com/jiriks74/msman.sh minecraft_server
+cd minecraft_server
+chmod +x msman.sh
+./msman.sh
+```
 
 ## Updating the server
 
