@@ -8,7 +8,7 @@ set -e
 #                            and acknowledge the original script and author.                                #
 #############################################################################################################
 
-CURRENT_SCRIPT_VERSION="v1.1.7"
+CURRENT_SCRIPT_VERSION="v1.1.8"
 
 # --------------------------------------------------
 # You shouldn't need to change anything in this file
@@ -319,7 +319,7 @@ function check_self_update {
       read -t 15 -p "Do you want to update? [y/N] " update
       if [ "$update" == "y" ] || [ "$update" == "Y" ]; then
         self_update
-        CURRENT_VERSION=$LATEST_SCRIPT_VERSION
+        CURRENT_SCRIPT_VERSION=$LATEST_SCRIPT_VERSION
         check_helper_scripts
         bash -c "$(pwd)/msman.sh"
       else
