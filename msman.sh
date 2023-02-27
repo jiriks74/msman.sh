@@ -466,14 +466,15 @@ if [[ "$1" == "--redownload" ]] || [[ "$1" == "-r" ]]; then
   exec "$0"
   exit 0
 elif [[ "$1" == "--edit-config" ]] || [[ "$1" == "-e" ]]; then
-  if command -v $EDITOR &> /dev/null
+  if ! command -v $EDITOR &> /dev/null
   then
-    $EDITOR msman.cfg
-  else
     echo "EDITOR is not set."
     echo "Open 'msman.cfg' manually."
+    exit 1
+  else
+    $EDITOR msman.cfg
+    exit 0
   fi
-  exit 1
 elif [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
   echo "Usage: ./script.sh [OPTION]"
   echo "Starts the Minecraft server."
