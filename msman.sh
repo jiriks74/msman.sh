@@ -8,7 +8,7 @@ set -e
 #                            and acknowledge the original script and author.                                #
 #############################################################################################################
 
-CURRENT_SCRIPT_VERSION="v1.0.1"
+CURRENT_SCRIPT_VERSION="v1.1.0"
 
 # --------------------------------------------------
 # You shouldn't need to change anything in this file
