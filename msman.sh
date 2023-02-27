@@ -222,6 +222,7 @@ function helper_scripts_update {
     rm msman-helper.tar.gz
     rm -rf msman
     echo "Helper scripts updated successfully."
+    $EXTRA_SCRIPTS_VERSION = $CURRENT_SCRIPT_VERSION
     echo
     echo
   else
