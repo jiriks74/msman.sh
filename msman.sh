@@ -8,7 +8,7 @@ set -e
 #                            and acknowledge the original script and author.                                #
 #############################################################################################################
 
-CURRENT_SCRIPT_VERSION="v1.1.8"
+CURRENT_SCRIPT_VERSION="v2.0.0"
 
 # --------------------------------------------------
 # You shouldn't need to change anything in this file
@@ -199,7 +199,8 @@ function launch_server {
   echo "Starting the server..."
   echo
   echo
-  java $java_launchoptions -jar "$(basename ./paper-*.jar)" $mc_launchoptions
+  echo $server_file
+  java $java_launchoptions -jar "$(echo $server_file)" $mc_launchoptions
 }
 
 # Helper scripts update
@@ -378,7 +379,7 @@ function load_config {
 # Delete old server file with name $old_server_file
 function delete_old_server {
   # Delete the old server file
-  echo "Deleting old server file $server_file..."
+  echo "Deleting old server file '$server_file...'"
   rm "$old_server_file"
   echo "Old server file deleted."
 }
@@ -393,12 +394,12 @@ function load_script {
   # Load the correct script
   if [[ $server_type == "paper" ]]; then
     source "./.msman/paper.sh"
+  elif [[ $server_type == "fabric" ]]; then
+    source "./.msman/fabric.sh"
   # elif [[ $server_type == "vanilla" ]]; then
   #   source "$cwd/msman/vanilla.sh"
   # elif [[ $server_type == "forge" ]]; then
   #   source "$cwd/msman/forge.sh"
-  # elif [[ $server_type == "fabric" ]]; then
-  #   source "$cwd/msman/fabric.sh"
   else
     >&2 echo "Unknown server type."
     echo "Exiting..."
