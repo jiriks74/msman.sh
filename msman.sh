@@ -8,7 +8,7 @@ set -e
 #                            and acknowledge the original script and author.                                #
 #############################################################################################################
 
-CURRENT_SCRIPT_VERSION="v1.1.3"
+CURRENT_SCRIPT_VERSION="v1.1.4"
 
 # --------------------------------------------------
 # You shouldn't need to change anything in this file
@@ -215,9 +215,10 @@ function helper_scripts_update {
     rm -rf .msman
     echo "Removed old script"
     echo "Moving new helper scripts into place..."
-    mv msman .msman
+    mv msman/.msman .msman
     echo "Removing temporary files..."
     rm msman-helper.tar.gz
+    rm -rf msman
     echo "Helper scripts updated successfully."
     echo
     echo
@@ -317,8 +318,7 @@ function check_self_update {
         self_update
         CURRENT_VERSION=$LATEST_SCRIPT_VERSION
         check_helper_scripts
-      ScriptLoc=$(readlink -f "$0")
-      bash -c $ScriptLoc
+        bash -c $(pwd)/msman.sh
       else
         echo "Skipping update."
         return
@@ -465,8 +465,7 @@ if [[ "$1" == "--redownload" ]] || [[ "$1" == "-r" ]]; then
   get_latest_script_release
   self_update
   # Reload the script
-  ScriptLoc=$(readlink -f "$0")
-  bash -c $ScriptLoc
+  bash -c $(pwd)/msman.sh
   exit 0
 elif [[ "$1" == "--edit-config" ]] || [[ "$1" == "-e" ]]; then
   if ! command -v $EDITOR &> /dev/null; then
