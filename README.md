@@ -44,6 +44,7 @@ This project aims to support more minecraft servers rather than just paper.
 ## Currently supported servers
 
 - [Paper](https://papermc.io/)
+- [Fabric](https://fabricmc.net/use/server/)
 
 ## Dependencies
 
