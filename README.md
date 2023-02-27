@@ -69,10 +69,10 @@ you're running something like Ubuntu.*
 
 ## Basic setup
 
-- Option 1: Run the script directly from GitHub
+- Option 1: Oneliner
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/jiriks74/msman.sh/main/msman.sh | bash -s -- --redownload
+curl -sSL "https://raw.githubusercontent.com/jiriks74/msman.sh/main/msman.sh" -o msman.sh && chmod +x msman.sh && ./msman.sh
 ```
 
 - Option 2: Download `msman.sh` from release to where you want your minecraft
