@@ -8,7 +8,7 @@ set -e
 #                            and acknowledge the original script and author.                                #
 #############################################################################################################
 
-CURRENT_SCRIPT_VERSION="v1.1.4"
+CURRENT_SCRIPT_VERSION="v1.1.5"
 
 # --------------------------------------------------
 # You shouldn't need to change anything in this file
@@ -207,7 +207,7 @@ function helper_scripts_update {
   # Download matching version of helper scripts
   echo "Updating helper scripts..."
   # Download the file into ms-man-helper.tar.gz
-  if [[ $(curl -sLJ -w '%{http_code}\n' "https://github.com/jiriks74/msman.sh/releases/download/v1.0.0/ms-man-helper.tar.gz" -o msman-helper.tar.gz) == 200 ]]; then
+  if [[ $(curl -sLJ -w '%{http_code}\n' "https://github.com/jiriks74/msman.sh/releases/download/$CURRENT_SCRIPT_VERSION/ms-man-helper.tar.gz" -o msman-helper.tar.gz) == 200 ]]; then
     # Extract the files from ms-man-helper.tar.gz
     tar -xzf msman-helper.tar.gz
     # Remove the old script
@@ -244,9 +244,10 @@ function self_update {
       rm msman.sh
       echo "Removed old script"
     fi
+    echo "Moving new script into place..."
     # Rename the new script
     mv msman_new.sh msman.sh
-    echo "Renamed new script"
+    echo "Moved new script into place"
     echo "Script updated successfully."
     echo
   else
@@ -318,7 +319,7 @@ function check_self_update {
         self_update
         CURRENT_VERSION=$LATEST_SCRIPT_VERSION
         check_helper_scripts
-        bash -c $(pwd)/msman.sh
+        bash -c "$(pwd)/msman.sh"
       else
         echo "Skipping update."
         return
@@ -465,7 +466,7 @@ if [[ "$1" == "--redownload" ]] || [[ "$1" == "-r" ]]; then
   get_latest_script_release
   self_update
   # Reload the script
-  bash -c $(pwd)/msman.sh
+  bash -c "$(pwd)/msman.sh"
   exit 0
 elif [[ "$1" == "--edit-config" ]] || [[ "$1" == "-e" ]]; then
   if ! command -v $EDITOR &> /dev/null; then
