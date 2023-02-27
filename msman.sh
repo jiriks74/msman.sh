@@ -241,7 +241,7 @@ function self_update {
     if [[ -f msman.sh ]]; then
       echo "Removing old script..."
       rm msman.sh
-    echo "Removed old script"
+      echo "Removed old script"
     fi
     # Rename the new script
     mv msman_new.sh msman.sh
@@ -404,9 +404,9 @@ function load_script {
 first_run() {
   if [[ $first_run == true ]]; then
     answer=""
-    echo "Since eula wasn't accepted, this is probably the first run of the server"
+    echo "Since eula wasn't accepted, this is probably the first run of the server."
     echo "If you want to install plugins (or mods), answer 'n' and you can do so."
-    echo "If you don't answer, the server will start in 15 secondd."
+    echo "If you don't answer, the server will start in 15 seconds."
     read -t 15 -p "Do you want to start the server now? [Y/n] " answer
     if [ "$answer" == "n" ] || [ "$answer" == "N" ]; then
       echo "Exiting..."
@@ -459,21 +459,28 @@ function main {
   launch_server
 }
 
-# Check for updates on GitHub
 if [[ "$1" == "--redownload" ]] || [[ "$1" == "-r" ]]; then
   get_latest_script_release
   self_update
   # Reload the script
   exec "$0"
   exit 0
-# TODO: Add `--edit-config` option
+elif [[ "$1" == "--edit-config" ]] || [[ "$1" == "-e" ]]; then
+  if [[ command -v $EDITOR &> /dev/null ]]; then
+    $EDITOR msman.cfg
+  else
+    echo "EDITOR is not set."
+    echo "Open 'msman.cfg' manually."
+  fi
+  exit 1
 elif [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
   echo "Usage: ./script.sh [OPTION]"
   echo "Starts the Minecraft server."
-  echo
+  echo 
   echo "Options:"
-  echo "  -r, --redownload  Redownloads the script from GitHub."
-  echo "  -h, --help        Show this help message."
+  echo "  -r, --redownload    Redownloads the script from GitHub."
+  echo "  -e, --edit-config   Edit the config file."
+  echo "  -h, --help          Show this help message."
   echo
   echo "To change the settings of the script, edit the 'msman.cfg' file."
   echo "If the file does not exist, it will be downloaded automatically when the script is run and you will be asked if you want to edit it."
