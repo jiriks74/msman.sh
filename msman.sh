@@ -318,7 +318,7 @@ function check_self_update {
         CURRENT_VERSION=$LATEST_SCRIPT_VERSION
         check_helper_scripts
       ScriptLoc=$(readlink -f "$0")
-      ./$ScriptLoc
+      bash -c $ScriptLoc
       else
         echo "Skipping update."
         return
@@ -466,7 +466,7 @@ if [[ "$1" == "--redownload" ]] || [[ "$1" == "-r" ]]; then
   self_update
   # Reload the script
   ScriptLoc=$(readlink -f "$0")
-  ./$ScriptLoc
+  bash -c $ScriptLoc
   exit 0
 elif [[ "$1" == "--edit-config" ]] || [[ "$1" == "-e" ]]; then
   if ! command -v $EDITOR &> /dev/null; then
