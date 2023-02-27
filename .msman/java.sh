@@ -86,16 +86,16 @@ function check_script_java {
 
 # Get the system Java version
 function check_java_exec {
-# Check if java is installed
-  if ! command -v java &> /dev/null
-  then
-      java_version=false
-  fi
-
-  # If java is installed, get the version (the java_version won't be 0)
-  if [[ $java_version != false ]]; then
+  # Check if java is installed
+  if ! command -v java &> /dev/null; then
+    java_version=false
+  else
     # Get the current Java version and extract the build number
     java_version=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}' | awk -F '.' '{print $1}')
+  fi
+
+  if [[ $java_version != $required_java ]]; then
+    java_version=false
   fi
 }
 
