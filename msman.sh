@@ -3,7 +3,7 @@ set -e
 #############################################################################################################
 #                                         MinecraftServerMANager                                            #
 #                                              by jiriks74                                                  #
-#                             https://github.com/jiriks74/start_papermc.sh                                  #
+#                                  https://github.com/jiriks74/msman.sh                                     #
 #  This script is under GPLv3, if you want to distribute changes you have to do so under the same license   #
 #                            and acknowledge the original script and author.                                #
 #############################################################################################################
@@ -317,7 +317,8 @@ function check_self_update {
         self_update
         CURRENT_VERSION=$LATEST_SCRIPT_VERSION
         check_helper_scripts
-        exec $0
+      ScriptLoc=$(readlink -f "$0")
+      ./$ScriptLoc
       else
         echo "Skipping update."
         return
@@ -464,7 +465,8 @@ if [[ "$1" == "--redownload" ]] || [[ "$1" == "-r" ]]; then
   get_latest_script_release
   self_update
   # Reload the script
-  exec $0
+  ScriptLoc=$(readlink -f "$0")
+  ./$ScriptLoc
   exit 0
 elif [[ "$1" == "--edit-config" ]] || [[ "$1" == "-e" ]]; then
   if ! command -v $EDITOR &> /dev/null; then
