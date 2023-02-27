@@ -3,8 +3,8 @@
 MAKEFLAGS += -s
 
 all:
-	CURRENT_SCRIPT_VERSION=`grep "CURRENT_SCRIPT_VERSION=" msman.sh | sed -e "s/CURRENT_SCRIPT_VERSION=//g" | sed '$d'`; \
-	EXTRA_VERSION=`grep "EXTRA_SCRIPTS_VERSION=" .msman/version.sh | sed -e "s/EXTRA_SCRIPTS_VERSION=//g" | sed '$d'`; \
+	CURRENT_SCRIPT_VERSION=`grep "CURRENT_SCRIPT_VERSION=" msman.sh | sed -e "s/CURRENT_SCRIPT_VERSION=//g" | head -n -1`; \
+	EXTRA_VERSION=`grep "EXTRA_SCRIPTS_VERSION=" .msman/version.sh | sed -e "s/EXTRA_SCRIPTS_VERSION=//g"`; \
 	if [ "$$CURRENT_SCRIPT_VERSION" != "$$EXTRA_VERSION" ]; then \
 		echo "ERROR: The version in msman.sh and .msman/version.sh are not the same!"; \
 		echo "ERROR: Please make sure they are the same."; \
