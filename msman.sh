@@ -475,7 +475,7 @@ if [[ "$1" == "--edit-config" ]] || [[ "$1" == "-e" ]]; then
     exit 0
   fi
 elif [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
-  echo "Usage: ./script.sh [OPTION]"
+  echo "Usage: ./msman.sh [OPTION]"
   echo "Starts the Minecraft server."
   echo 
   echo "Options:"
