@@ -8,7 +8,7 @@ set -e
 #                            and acknowledge the original script and author.                                #
 #############################################################################################################
 
-CURRENT_SCRIPT_VERSION="v2.0.1"
+CURRENT_SCRIPT_VERSION="v2.1.1"
 
 # --------------------------------------------------
 # You shouldn't need to change anything in this file
@@ -127,6 +127,36 @@ function ask_version_differs {
     if [ "$version_differs" != "y" ] && [ "$version_differs" != "Y" ]; then
       echo "Server version not updated."
       echo "To start the server again with the current version, change the version in the config to $current_version."
+      exit 4
+    fi
+  fi
+}
+
+# Ask if the new server version differs from the old one
+function ask_server_type_differs {
+  echo
+  echo
+  echo "The current server type differs from the one you selected."
+  echo "The server version is $existing_server_type and the selected type is $server_type."
+  echo "Do you want to change the server type?"
+  echo "This can cause many issues if you don't know what you are doing."
+  echo
+  echo "I am not responsible for any data loss caused by changing the server type."
+  echo
+  echo "You have 15 seconds to respond, or the script will exit"
+  read -t 15 -p "Do you want to change the server type? [y/N] " type_differs
+
+  if [ "$type_differs" != "y" ] && [ "$type_differs" != "Y" ]; then
+    echo "Server type not changed."
+    echo "To start the server again with the server type, change the server type in the config to $existing_server_type."
+    exit 4
+  fi
+
+  if [ "$type_differs" == "y" ] || [ "$type_differs" == "Y" ]; then
+    read -t 15 -p "Are you sure you want to change the server type? [y/N] " type_differs
+    if [ "$type_differs" != "y" ] && [ "$type_differs" != "Y" ]; then
+      echo "Server type not changed."
+      echo "To start the server again with the server type, change the server type in the config to $existing_server_type."
       exit 4
     fi
   fi
@@ -442,6 +472,11 @@ function main {
   # Load the rest of the script
   # Get the current server file, version and build
   load_script
+
+  # Check if the server type differs from the one in the config
+  if [[ $existing_server_type != $server_type ]]; then
+    ask_server_differs
+  fi
 
   # Gets the installed server info
   get_existing_server
