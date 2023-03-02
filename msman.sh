@@ -8,7 +8,7 @@ set -e
 #                            and acknowledge the original script and author.                                #
 #############################################################################################################
 
-CURRENT_SCRIPT_VERSION="v2.1.1"
+CURRENT_SCRIPT_VERSION="v2.1.2"
 
 # --------------------------------------------------
 # You shouldn't need to change anything in this file
@@ -477,8 +477,10 @@ function main {
   get_existing_server
 
   # Check if the server type differs from the one in the config
-  if [[ $existing_server_type != $server_type ]]; then
-    ask_server_differs
+  if [[ $server_file != false ]]; then
+    if [[ $existing_server_type != $server_type ]]; then
+      ask_server_differs
+    fi
   fi
 
   # Check if the version and build are valid

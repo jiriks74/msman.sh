@@ -36,6 +36,7 @@ function check_updates {
     download_build=$latest_build
     update_version=true
     update_build=true
+    return
   else
     echo Checking for updates...
   fi
