@@ -8,7 +8,7 @@ set -e
 #                            and acknowledge the original script and author.                                #
 #############################################################################################################
 
-CURRENT_SCRIPT_VERSION="v2.1.2"
+CURRENT_SCRIPT_VERSION="v2.1.3"
 
 # --------------------------------------------------
 # You shouldn't need to change anything in this file
@@ -498,6 +498,8 @@ function main {
   # Check if this is the first run
   first_run
 
+  # Set the java arguments
+  set_java_args
   # Launch the server
   launch_server
 }
