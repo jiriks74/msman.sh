@@ -8,7 +8,7 @@ set -e
 #                            and acknowledge the original script and author.                                #
 #############################################################################################################
 
-CURRENT_SCRIPT_VERSION="v2.1.5"
+CURRENT_SCRIPT_VERSION="v2.1.6"
 
 # --------------------------------------------------
 # You shouldn't need to change anything in this file
@@ -107,7 +107,7 @@ function ask_version_differs {
   echo
   echo
   echo "The current server version differs from the one you selected."
-  echo "The server version is $current_version and the selected version is $select_version."
+  echo "The server version is $current_version and the selected version is $version."
   echo "Do you want to update the server version?"
   echo "This can cause many issues if you don't know what you are doing."
   echo
