@@ -176,7 +176,7 @@ function download_jre {
     echo "Extracting Java 16"
     tar -xzf java.tar.gz
     echo "Moving Java 16 to $(echo $HOME)/.adoptium_java/jre16"
-    mv jdk-16.0.2+7-jre "$(echo $HOME)/.adoptium_java/jre16"
+    mv jdk-16.0.2+7 "$(echo $HOME)/.adoptium_java/jre16"
     echo "Removing temporary files"
     rm java.tar.gz
   elif [[ $required_java == "17" ]]; then
