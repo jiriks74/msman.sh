@@ -172,7 +172,7 @@ function download_jre {
     rm java.tar.gz
   elif [[ $required_java == "16" ]]; then
     echo "Downloading Java 16"
-    curl -L -o java.tar.gz "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.18%2B10/OpenJDK11U-jre_$(echo $arch)_linux_hotspot_16.0.2_7.tar.gz"
+    curl -L -o java.tar.gz "https://github.com/adoptium/temurin16-binaries/releases/download/jdk-16.0.2%2B7/OpenJDK16U-jdk_$(echo $arch)_linux_hotspot_16.0.2_7.tar.gz"
     echo "Extracting Java 16"
     tar -xzf java.tar.gz
     echo "Moving Java 16 to $(echo $HOME)/.adoptium_java/jre16"
